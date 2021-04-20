@@ -56,7 +56,13 @@ public class Snake {
             move_logic();
         }
     }
-            public void move_logic() {
+    public void move_logic() {
+
+        int segmentWight= texture.getWidth();
+        int segmentHeight = texture.getHeight();
+        int lastWindowSegmentX = Gdx.graphics.getWidth() - segmentWight;
+        int lastWindowSegmentY = Gdx.graphics.getHeight() - segmentHeight;
+
                 for (int i = snake_segments.size() - 1; i > 0; i--) {
                     snake_segments.get(i).set(snake_segments.get(i - 1));
                 }
@@ -64,20 +70,19 @@ public class Snake {
 
                 switch (direction) {
                     case LEFT: {
-                        head_snake.x -= texture.getWidth();
+                        head_snake.x = (head_snake.x==0) ? lastWindowSegmentX : head_snake.x - segmentWight;
                         break;
                     }
                     case UP: {
-                        head_snake.y += texture.getHeight();
+                        head_snake.y= (head_snake.y == lastWindowSegmentY) ? 0 : head_snake.y + segmentHeight;
                         break;
                     }
                     case DOWN: {
-
-                        head_snake.y -= texture.getHeight();
+                        head_snake.y= (head_snake.y== 0) ? lastWindowSegmentY : head_snake.y - segmentHeight;
                         break;
                     }
                     case RIGHT: {
-                        head_snake.x += texture.getWidth();
+                        head_snake.x = (head_snake.x==lastWindowSegmentX) ? 0 : head_snake.x + segmentWight;
                         break;
                     }
                     default:
