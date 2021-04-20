@@ -33,7 +33,7 @@ public class GameApp extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		snake.move(Gdx.graphics.getDeltaTime());
+		snake.move(Gdx.graphics.getDeltaTime()/2);
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
