@@ -12,7 +12,7 @@ import java.util.List;
 public class Snake {
 
     private final Texture texture;
-    private  List<GridPoint2> snake_segments = new ArrayList<>();
+    private  List<GridPoint2> snakeSegments = new ArrayList<>();
     private MovementDirection direction;
     private float timeSinceLastMove;
 
@@ -20,16 +20,16 @@ public class Snake {
         this.texture = texture;
 
         direction = MovementDirection.RIGHT;
-        snake_segments.add(new GridPoint2(90,30));
-        snake_segments.add(new GridPoint2(75,30));
-        snake_segments.add(new GridPoint2(60,30));
-        snake_segments.add(new GridPoint2(45,30));
-        snake_segments.add(new GridPoint2(30,30));
+        snakeSegments.add(new GridPoint2(90,30));
+        snakeSegments.add(new GridPoint2(75,30));
+        snakeSegments.add(new GridPoint2(60,30));
+        snakeSegments.add(new GridPoint2(45,30));
+        snakeSegments.add(new GridPoint2(30,30));
 
     }
 
     public void draw(Batch batch){
-        for(GridPoint2 position : snake_segments){
+        for(GridPoint2 position : snakeSegments){
             batch.draw(texture,position.x,position.y);
         }
     }
@@ -46,6 +46,8 @@ public class Snake {
         }
     }
 
+
+
     public void move(float deltaTime) {
         changeDirection();
         timeSinceLastMove += deltaTime;
@@ -60,13 +62,14 @@ public class Snake {
 
         int segmentWight= texture.getWidth();
         int segmentHeight = texture.getHeight();
+
         int lastWindowSegmentX = Gdx.graphics.getWidth() - segmentWight;
         int lastWindowSegmentY = Gdx.graphics.getHeight() - segmentHeight;
 
-                for (int i = snake_segments.size() - 1; i > 0; i--) {
-                    snake_segments.get(i).set(snake_segments.get(i - 1));
+                for (int i = snakeSegments.size() - 1; i > 0; i--) {
+                    snakeSegments.get(i).set(snakeSegments.get(i - 1));
                 }
-                GridPoint2 head_snake = snake_segments.get(0);
+                GridPoint2 head_snake = head();
 
                 switch (direction) {
                     case LEFT: {
@@ -89,4 +92,16 @@ public class Snake {
                         break;
                 }
             }
+            public boolean isFoundPoint(GridPoint2 point){
+        return head().equals(point);
+            }
+
+            public void addSegment(){
+
+            snakeSegments.add(new GridPoint2(snakeSegments.get(snakeSegments.size()-1)));
+            }
+
+    private GridPoint2 head() {
+        return snakeSegments.get(0);
+    }
         }

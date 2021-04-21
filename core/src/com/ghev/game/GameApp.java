@@ -12,19 +12,23 @@ public class GameApp extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private Texture snakeImg;
 	private Texture playground;
+	private Texture pointImg;
 
+	private Point point;
 	private Snake snake;
 
 	public static int SCREEN_WIDTH;
 	public static int SCREEN_HEIGHT;
 
-
 	@Override
 	public void create () {
+
+		pointImg = new Texture("star.jpg");
 		playground= new Texture("podzial_na_kwadraty.png");
 		snakeImg = new Texture("snake.png");
 		batch = new SpriteBatch();
 		snake =  new Snake(snakeImg);
+		point = new Point(pointImg);
 
 
 
@@ -34,13 +38,19 @@ public class GameApp extends ApplicationAdapter {
 	@Override
 	public void render () {
 		snake.move(Gdx.graphics.getDeltaTime()/2);
+
+		if(snake.isFoundPoint(point.getPosition())){
+			snake.addSegment();
+			point.randomizePosition();
+		}
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
 		batch.begin();
 
+
 		batch.draw(playground,0,0);
+		point.draw(batch);
 		snake.draw(batch);
 
 		batch.end();
@@ -53,6 +63,7 @@ public class GameApp extends ApplicationAdapter {
 		batch.dispose();
 		playground.dispose();
 		snakeImg.dispose();
+		pointImg.dispose();
 
 	}
 }
