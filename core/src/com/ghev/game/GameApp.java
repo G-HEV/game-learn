@@ -24,7 +24,7 @@ public class GameApp extends ApplicationAdapter {
 	@Override
 	public void create () {
 
-		pointImg = new Texture("star.jpg");
+		pointImg = new Texture("point.png");
 		playground= new Texture("podzial_na_kwadraty.png");
 		snakeImg = new Texture("snake.png");
 		batch = new SpriteBatch();
@@ -45,7 +45,6 @@ public class GameApp extends ApplicationAdapter {
 			if (snake.isFoundPoint(point.getPosition())) {
 				snake.addSegment();
 				point.randomizePosition(snake);
-
 				}
 
 			Gdx.gl.glClearColor(1, 1, 1, 1);
