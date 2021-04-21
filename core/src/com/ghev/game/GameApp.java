@@ -13,6 +13,7 @@ public class GameApp extends ApplicationAdapter {
 	private Texture snakeImg;
 	private Texture playground;
 	private Texture pointImg;
+	private boolean gameOver;
 
 	private Point point;
 	private Snake snake;
@@ -29,7 +30,7 @@ public class GameApp extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		snake =  new Snake(snakeImg);
 		point = new Point(pointImg);
-
+		gameOver = snake.isCollision();
 
 
 	}
@@ -37,24 +38,29 @@ public class GameApp extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		snake.move(Gdx.graphics.getDeltaTime()/2);
+		if(!snake.isCollision()) {
+			gameOver= false;
+			snake.move(Gdx.graphics.getDeltaTime() / 2);
 
-		if(snake.isFoundPoint(point.getPosition())){
-			snake.addSegment();
-			point.randomizePosition();
+			if (snake.isFoundPoint(point.getPosition())) {
+				snake.addSegment();
+				point.randomizePosition();
+			}
+			Gdx.gl.glClearColor(1, 1, 1, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+			batch.begin();
+			batch.draw(playground, 0, 0);
+			point.draw(batch);
+			snake.draw(batch);
+
+			batch.end();
+		}else{
+			gameOver = true;
 		}
-		Gdx.gl.glClearColor(1,1,1,1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		batch.begin();
-
-
-		batch.draw(playground,0,0);
-		point.draw(batch);
-		snake.draw(batch);
-
-		batch.end();
-
+		if(Gdx.input.isKeyJustPressed(Input.Keys.R) || (Gdx.input.isKeyPressed(Input.Keys.R))){
+			restart();
+		}
 
 	}
 
@@ -66,4 +72,11 @@ public class GameApp extends ApplicationAdapter {
 		pointImg.dispose();
 
 	}
+
+	public void restart(){
+		snake = new Snake(snakeImg);
+		point.randomizePosition();
+
+	}
+
 }

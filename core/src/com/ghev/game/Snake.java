@@ -16,6 +16,11 @@ public class Snake {
     private MovementDirection direction;
     private float timeSinceLastMove;
 
+
+    private boolean changingDirection=false;
+
+
+
     public Snake(Texture texture) {
         this.texture = texture;
 
@@ -26,6 +31,7 @@ public class Snake {
         snakeSegments.add(new GridPoint2(45,30));
         snakeSegments.add(new GridPoint2(30,30));
 
+
     }
 
     public void draw(Batch batch){
@@ -35,26 +41,41 @@ public class Snake {
     }
 
     private void changeDirection(){
+        MovementDirection fixDirection = direction;
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.W) && direction != MovementDirection.DOWN){
-            direction = MovementDirection.UP;
+
+            fixDirection = MovementDirection.UP;
+
         }else if(Gdx.input.isKeyJustPressed(Input.Keys.S) && direction != MovementDirection.UP){
-            direction = MovementDirection.DOWN;
+
+            fixDirection = MovementDirection.DOWN;
+
         }else if(Gdx.input.isKeyJustPressed(Input.Keys.A) && direction != MovementDirection.RIGHT){
-            direction= MovementDirection.LEFT;
+
+            fixDirection= MovementDirection.LEFT;
+
         }else if(Gdx.input.isKeyJustPressed(Input.Keys.D) && direction != MovementDirection.LEFT){
-            direction = MovementDirection.RIGHT;
+
+            fixDirection = MovementDirection.RIGHT;
+        }
+        if(fixDirection!=direction){
+            direction = fixDirection;
+            changingDirection=false;
         }
     }
 
 
 
     public void move(float deltaTime) {
-        changeDirection();
+        if(changingDirection) {
+            changeDirection();
+        }
         timeSinceLastMove += deltaTime;
 
         if (timeSinceLastMove > 0.1) {
             timeSinceLastMove = 0;
-
+            changingDirection=true;
             move_logic();
         }
     }
@@ -104,4 +125,14 @@ public class Snake {
     private GridPoint2 head() {
         return snakeSegments.get(0);
     }
+    public boolean isCollision(){
+
+        for (int i = snakeSegments.size() - 1; i > 0; i--) {
+            if( snakeSegments.get(i).equals(head())){
+                return true;
+            }
         }
+        return false;
+    }
+
+}
