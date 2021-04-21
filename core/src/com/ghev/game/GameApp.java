@@ -30,7 +30,7 @@ public class GameApp extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		snake =  new Snake(snakeImg);
 		point = new Point(pointImg);
-		gameOver = snake.isCollision();
+		gameOver = false;
 
 
 	}
@@ -44,8 +44,10 @@ public class GameApp extends ApplicationAdapter {
 
 			if (snake.isFoundPoint(point.getPosition())) {
 				snake.addSegment();
-				point.randomizePosition();
-			}
+				point.randomizePosition(snake);
+
+				}
+
 			Gdx.gl.glClearColor(1, 1, 1, 1);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -56,6 +58,7 @@ public class GameApp extends ApplicationAdapter {
 
 			batch.end();
 		}else{
+			System.out.println("Game Over press R to restart");
 			gameOver = true;
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.R) || (Gdx.input.isKeyPressed(Input.Keys.R))){
@@ -74,8 +77,9 @@ public class GameApp extends ApplicationAdapter {
 	}
 
 	public void restart(){
+		gameOver=false;
 		snake = new Snake(snakeImg);
-		point.randomizePosition();
+		point.randomizePosition(snake);
 
 	}
 

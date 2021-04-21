@@ -134,5 +134,9 @@ public class Snake {
         }
         return false;
     }
+    public List<GridPoint2> allPositionSnakeSegments(){
+        System.out.println("snake: "+snakeSegments);
+        return new ArrayList<>(snakeSegments);
+    }
 
 }
